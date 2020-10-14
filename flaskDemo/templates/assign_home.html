@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% for row in joined_m_n %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ row['Reservation_Id'] }}</a>		  
+              <small class="text-muted">{{ row['FName'] }}  {{ row['LName'] }}</small>
+            </div>
+            <div class="article-metadata">
+                <a class="mr-2">{{ row['Title'] }}</a>
+            </div>
+			<h2><a class="article-title" href="{{ url_for('details_reserve', Reservation_Id=row.Reservation_Id) }}"> <button class="btn btn-outline-info"> View Details </button> </a></h2>
+           
+          </div>
+        </article>
+     {% endfor %}
+{% endblock content %}
+
+
+
+<!-- 1. check if joined_m_n is empty, if empty then display message no books reserved in h2 tag
+2. if books then no change -->
