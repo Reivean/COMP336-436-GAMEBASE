@@ -216,7 +216,7 @@ def reserve():
         reserve = Reservation(Item_Id = form.Item_Id.data, User_ID=form.User_ID.data,Reservation_Date=datetime.today().strftime('%Y-%m-%d-%H:%M:%S'),Due_Date=form.Due_Date.data)
         db.session.add(reserve)
         db.session.commit()
-        flash('The Item has been added to your interest at' + datetime.today().strftime('%Y-%m-%d-%H:%M:%S'), 'success')
+        flash('The Item has been added to your interest at ' + datetime.today().strftime('%Y-%m-%d-%H:%M:%S'), 'success')
         return redirect(url_for('home'))
     return render_template('create_reserve.html', title='New Interest',form=form, legend='New Interest')
 
