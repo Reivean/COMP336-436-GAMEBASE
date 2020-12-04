@@ -21,7 +21,7 @@ class User(db.Model, UserMixin):
     posts = db.relationship('Post', backref='author', lazy=True)
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.image_file}')"
+        return "User('{self.username}', '{self.email}', '{self.image_file}')"
 
 
 class Post(db.Model):
@@ -36,48 +36,6 @@ class Post(db.Model):
          return f"Post('{self.title}', '{self.date_posted}')"
      
         
-
-##Search results table code  -Ted
-#class Results(Table):
-#    Title = Col('Title')
-#    Item_Id = Col('Item ID')
-#    Author_Id = Col('Author ID')
-#    Author.LastName = Col('Author Last Name')
-#    Publisher_Id = Col('Publisher ID') 
-#    Language_Id = Col('Language ID')
-#    Rack_Id = Col('Rack ID')
-#    Keyword = Col('Keyword')
-#    Item_type_id = Col('Item Type', show=False)
-# #End of Search results table code   -Ted
-
-# class Dependent(db.Model):
- #   __table__ = db.Model.metadata.tables['dependent']
-""" 
-class Department(db.Model):
-    __table__ = db.Model.metadata.tables['department']
-
-# used for query_factory
-def getDepartment(columns=None):
-    u = Department.query
-    if columns:
-        u = u.options(orm.load_only(*columns))
-    return u
-
-def getDepartmentFactory(columns=None):
-    return partial(getDepartment, columns=columns)
-
-class Dept_Locations(db.Model):
-    __table__ = db.Model.metadata.tables['dept_locations']
-    
-class Employee(db.Model):
-    __table__ = db.Model.metadata.tables['employee']
-
-class Project(db.Model):
-    __table__ = db.Model.metadata.tables['project']
-    
-class Works_On(db.Model):
-    __table__ = db.Model.metadata.tables['works_on']
-"""
 class User1(db.Model):
     __table__ = db.Model.metadata.tables['User1']
     @property
@@ -98,8 +56,8 @@ class User1(db.Model):
 class Item(db.Model):
     __table__ = db.Model.metadata.tables['Item']
 
-class Author(db.Model):
-    __table__ = db.Model.metadata.tables['Author']
+class Developer(db.Model):
+    __table__ = db.Model.metadata.tables['Developer']
     
 class Language(db.Model):
     __table__ = db.Model.metadata.tables['Language']
@@ -121,16 +79,14 @@ class Item_type(db.Model):
 
 
 
-#Search results table code  -Ted
 class Results(Table):
     Title = Col('Title')
     Item_Id = Col('Item ID')
-    Author_Id = Col('Author ID')
-#    Author.LastName = Col('Author Last Name')
+    Developer_Id = Col('Developer ID')
     Publisher_Id = Col('Publisher ID') 
     Language_Id = Col('Language ID')
     Rack_Id = Col('Rack ID')
     Keyword = Col('Keyword')
     Item_type_id = Col('Item Type', show=False)
- #End of Search results table code   -Ted
+
 

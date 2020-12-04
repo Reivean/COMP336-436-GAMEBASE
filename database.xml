@@ -5,7 +5,7 @@
 - https://www.phpmyadmin.net
 -
 - Host: localhost:8889
-- Generation Time: Dec 01, 2020 at 11:40 PM
+- Generation Time: Dec 04, 2020 at 12:26 AM
 - Server version: 5.7.26
 - PHP Version: 7.4.1
 -->
@@ -15,53 +15,36 @@
     - Structure schemas
     -->
     <pma:structure_schemas>
-        <pma:database name="university library" collation="utf8_general_ci" charset="utf8">
-            <pma:table name="Alumni">
-                CREATE TABLE `Alumni` (
-                  `Graduation_Date` date DEFAULT NULL,
-                  `User_Id` int(11) NOT NULL,
-                  KEY `User_Id` (`User_Id`),
-                  CONSTRAINT `alumni_ibfk_1` FOREIGN KEY (`User_Id`) REFERENCES `User1` (`User_Id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        <pma:database name="GAMEBASE" collation="utf8_general_ci" charset="utf8">
+            <pma:table name="Developer">
+                CREATE TABLE `Developer` (
+                  `Developer_Id` int(11) NOT NULL AUTO_INCREMENT,
+                  `DeveloperName` varchar(15) NOT NULL,
+                  PRIMARY KEY (`Developer_Id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=308 DEFAULT CHARSET=utf8;
             </pma:table>
-            <pma:table name="Author">
-                CREATE TABLE `Author` (
-                  `Author_Id` int(11) NOT NULL AUTO_INCREMENT,
-                  `FirstName` varchar(15) NOT NULL,
-                  `LastName` varchar(15) NOT NULL,
-                  PRIMARY KEY (`Author_Id`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=307 DEFAULT CHARSET=utf8;
-            </pma:table>
-            <pma:table name="Book">
-                CREATE TABLE `Book` (
+            <pma:table name="Game">
+                CREATE TABLE `Game` (
                   `ISBN` int(11) NOT NULL,
                   `Item_type_id` int(11) NOT NULL,
-                  `Book_type_Id` int(11) NOT NULL,
+                  `Gene_Id` int(11) NOT NULL,
                   PRIMARY KEY (`ISBN`),
-                  KEY `Book_type_Id` (`Book_type_Id`),
-                  CONSTRAINT `book_ibfk_1` FOREIGN KEY (`Book_type_Id`) REFERENCES `Book_type` (`Book_type_Id`)
+                  KEY `Gene_Id` (`Gene_Id`) USING BTREE,
+                  CONSTRAINT `game_ibfk_1` FOREIGN KEY (`Gene_Id`) REFERENCES `Game_Gene` (`Gene_Id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
             </pma:table>
-            <pma:table name="Book_type">
-                CREATE TABLE `Book_type` (
-                  `Book_type_Id` int(11) NOT NULL AUTO_INCREMENT,
+            <pma:table name="Game_Gene">
+                CREATE TABLE `Game_Gene` (
+                  `Gene_Id` int(11) NOT NULL AUTO_INCREMENT,
                   `Name` varchar(50) NOT NULL,
-                  PRIMARY KEY (`Book_type_Id`),
+                  PRIMARY KEY (`Gene_Id`),
                   UNIQUE KEY `Name` (`Name`)
                 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-            </pma:table>
-            <pma:table name="Faculty">
-                CREATE TABLE `Faculty` (
-                  `User_Id` int(11) NOT NULL,
-                  `Retired_faculty` tinyint(1) NOT NULL,
-                  KEY `User_Id` (`User_Id`),
-                  CONSTRAINT `faculty_ibfk_1` FOREIGN KEY (`User_Id`) REFERENCES `User1` (`User_Id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
             </pma:table>
             <pma:table name="Item">
                 CREATE TABLE `Item` (
                   `Item_Id` int(11) NOT NULL AUTO_INCREMENT,
-                  `Author_Id` int(11) NOT NULL,
+                  `Developer_Id` int(11) NOT NULL,
                   `Publisher_Id` varchar(60) NOT NULL,
                   `Publication_Date` date NOT NULL,
                   `Language_Id` int(11) NOT NULL,
@@ -70,16 +53,11 @@
                   `Keyword` varchar(15) NOT NULL,
                   `Item_type_id` int(11) NOT NULL,
                   PRIMARY KEY (`Item_Id`),
-                  KEY `Author_Id` (`Author_Id`),
                   KEY `Publisher_Id` (`Publisher_Id`),
                   KEY `Language_Id` (`Language_Id`),
                   KEY `Rack_Id` (`Rack_Id`),
                   KEY `Item_type_id` (`Item_type_id`),
-                  CONSTRAINT `item_ibfk_1` FOREIGN KEY (`Author_Id`) REFERENCES `Author` (`Author_Id`),
-                  CONSTRAINT `item_ibfk_2` FOREIGN KEY (`Publisher_Id`) REFERENCES `Publisher` (`Publisher_Id`),
-                  CONSTRAINT `item_ibfk_3` FOREIGN KEY (`Language_Id`) REFERENCES `Language` (`Language_Id`),
-                  CONSTRAINT `item_ibfk_4` FOREIGN KEY (`Rack_Id`) REFERENCES `Rack` (`Rack_Id`),
-                  CONSTRAINT `item_ibfk_5` FOREIGN KEY (`Item_type_id`) REFERENCES `Item_type` (`Item_type_id`)
+                  KEY `Developer_Id` (`Developer_Id`) USING BTREE
                 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
             </pma:table>
             <pma:table name="Item_type">
@@ -97,21 +75,27 @@
                   PRIMARY KEY (`Language_Id`)
                 ) ENGINE=InnoDB AUTO_INCREMENT=211 DEFAULT CHARSET=utf8;
             </pma:table>
-            <pma:table name="Library_Staff">
-                CREATE TABLE `Library_Staff` (
+            <pma:table name="Manager">
+                CREATE TABLE `Manager` (
                   `User_Id` int(11) NOT NULL,
-                  `Retired_Library_Staff` tinyint(1) NOT NULL,
+                  `Retired_faculty` tinyint(1) NOT NULL,
                   KEY `User_Id` (`User_Id`),
-                  CONSTRAINT `library_staff_ibfk_1` FOREIGN KEY (`User_Id`) REFERENCES `User1` (`User_Id`)
+                  CONSTRAINT `manager_ibfk_1` FOREIGN KEY (`User_Id`) REFERENCES `user1` (`User_Id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
             </pma:table>
-            <pma:table name="periodical">
-                CREATE TABLE `periodical` (
-                  `ISSN` int(11) NOT NULL,
+            <pma:table name="Member">
+                CREATE TABLE `Member` (
+                  `Member_Id` int(11) NOT NULL,
+                  `User_Id` int(11) NOT NULL,
+                  KEY `User_Id` (`User_Id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+            </pma:table>
+            <pma:table name="movies">
+                CREATE TABLE `movies` (
+                  `ISAN` int(11) NOT NULL,
                   `Item_Id` int(11) NOT NULL,
-                  PRIMARY KEY (`ISSN`),
-                  KEY `Item_Id` (`Item_Id`),
-                  CONSTRAINT `periodical_ibfk_1` FOREIGN KEY (`Item_Id`) REFERENCES `Item` (`Item_Id`)
+                  PRIMARY KEY (`ISAN`),
+                  KEY `Item_Id` (`Item_Id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
             </pma:table>
             <pma:table name="post">
@@ -122,8 +106,14 @@
                   `content` text NOT NULL,
                   `user_id` int(11) NOT NULL,
                   PRIMARY KEY (`id`),
-                  KEY `user_id` (`user_id`),
-                  CONSTRAINT `post_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+                  KEY `user_id` (`user_id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+            </pma:table>
+            <pma:table name="Promember">
+                CREATE TABLE `Promember` (
+                  `Memeber_Year` date DEFAULT NULL,
+                  `User_Id` int(11) NOT NULL,
+                  KEY `User_Id` (`User_Id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
             </pma:table>
             <pma:table name="Publisher">
@@ -150,17 +140,14 @@
                   `User_ID` int(11) NOT NULL,
                   PRIMARY KEY (`Reservation_Id`),
                   KEY `Item_Id` (`Item_Id`),
-                  KEY `User_ID` (`User_ID`),
-                  CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`Item_Id`) REFERENCES `Item` (`Item_Id`),
-                  CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`User_ID`) REFERENCES `User1` (`User_Id`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+                  KEY `User_ID` (`User_ID`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
             </pma:table>
-            <pma:table name="Student">
-                CREATE TABLE `Student` (
-                  `Student_Id` int(11) NOT NULL,
+            <pma:table name="Staff">
+                CREATE TABLE `Staff` (
                   `User_Id` int(11) NOT NULL,
-                  KEY `User_Id` (`User_Id`),
-                  CONSTRAINT `student_ibfk_1` FOREIGN KEY (`User_Id`) REFERENCES `User1` (`User_Id`)
+                  `Retired_Staff` tinyint(1) NOT NULL,
+                  KEY `User_Id` (`User_Id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
             </pma:table>
             <pma:table name="user">
@@ -187,9 +174,8 @@
                   `Email` varchar(25) NOT NULL,
                   `User1_type_id` int(11) NOT NULL,
                   PRIMARY KEY (`User_Id`),
-                  KEY `User1_type_id` (`User1_type_id`),
-                  CONSTRAINT `user1_ibfk_1` FOREIGN KEY (`User1_type_id`) REFERENCES `User1_type` (`User1_type_id`)
-                ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+                  KEY `User1_type_id` (`User1_type_id`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
             </pma:table>
             <pma:table name="User1_type">
                 CREATE TABLE `User1_type` (
@@ -203,157 +189,143 @@
     </pma:structure_schemas>
 
     <!--
-    - Database: 'university library'
+    - Database: 'GAMEBASE'
     -->
-    <database name="university library">
-        <!-- Table Alumni -->
-        <table name="Alumni">
-            <column name="Graduation_Date">2019-05-15</column>
-            <column name="User_Id">1</column>
+    <database name="GAMEBASE">
+        <!-- Table Developer -->
+        <table name="Developer">
+            <column name="Developer_Id">301</column>
+            <column name="DeveloperName">Nintendo</column>
         </table>
-        <table name="Alumni">
-            <column name="Graduation_Date">2019-12-15</column>
-            <column name="User_Id">2</column>
+        <table name="Developer">
+            <column name="Developer_Id">302</column>
+            <column name="DeveloperName">Valve Corporati</column>
         </table>
-        <table name="Alumni">
-            <column name="Graduation_Date">2018-05-15</column>
-            <column name="User_Id">3</column>
+        <table name="Developer">
+            <column name="Developer_Id">303</column>
+            <column name="DeveloperName">Rockstar Games</column>
         </table>
-        <table name="Alumni">
-            <column name="Graduation_Date">2018-12-15</column>
-            <column name="User_Id">4</column>
+        <table name="Developer">
+            <column name="Developer_Id">304</column>
+            <column name="DeveloperName">Electronic Arts</column>
         </table>
-        <!-- Table Author -->
-        <table name="Author">
-            <column name="Author_Id">301</column>
-            <column name="FirstName">Anand</column>
-            <column name="LastName">Pillay</column>
+        <table name="Developer">
+            <column name="Developer_Id">305</column>
+            <column name="DeveloperName">Activision Bliz</column>
         </table>
-        <table name="Author">
-            <column name="Author_Id">302</column>
-            <column name="FirstName">K.M</column>
-            <column name="LastName">Hangos</column>
+        <table name="Developer">
+            <column name="Developer_Id">306</column>
+            <column name="DeveloperName">Sony Interactiv</column>
         </table>
-        <table name="Author">
-            <column name="Author_Id">303</column>
-            <column name="FirstName">Michael</column>
-            <column name="LastName">Johnson</column>
+        <table name="Developer">
+            <column name="Developer_Id">307</column>
+            <column name="DeveloperName">Ubisoft</column>
         </table>
-        <table name="Author">
-            <column name="Author_Id">304</column>
-            <column name="FirstName">Gary</column>
-            <column name="LastName">Ackers</column>
-        </table>
-        <table name="Author">
-            <column name="Author_Id">305</column>
-            <column name="FirstName">Steven</column>
-            <column name="LastName">King</column>
-        </table>
-        <table name="Author">
-            <column name="Author_Id">306</column>
-            <column name="FirstName">John</column>
-            <column name="LastName">Grisham</column>
-        </table>
-        <!-- Table Book -->
-        <table name="Book">
+        <!-- Table Game -->
+        <table name="Game">
             <column name="ISBN">-1260078195</column>
             <column name="Item_type_id">1</column>
-            <column name="Book_type_Id">2</column>
+            <column name="Gene_Id">2</column>
         </table>
-        <table name="Book">
+        <table name="Game">
             <column name="ISBN">-123744987</column>
             <column name="Item_type_id">2</column>
-            <column name="Book_type_Id">1</column>
+            <column name="Gene_Id">1</column>
         </table>
-        <table name="Book">
+        <table name="Game">
             <column name="ISBN">-121568332</column>
             <column name="Item_type_id">1</column>
-            <column name="Book_type_Id">2</column>
+            <column name="Gene_Id">2</column>
         </table>
-        <table name="Book">
+        <table name="Game">
             <column name="ISBN">-80440503</column>
             <column name="Item_type_id">2</column>
-            <column name="Book_type_Id">1</column>
+            <column name="Gene_Id">1</column>
         </table>
-        <!-- Table Book_type -->
-        <table name="Book_type">
-            <column name="Book_type_Id">1</column>
-            <column name="Name">E-Book</column>
+        <!-- Table Game_Gene -->
+        <table name="Game_Gene">
+            <column name="Gene_Id">1</column>
+            <column name="Name">Action</column>
         </table>
-        <table name="Book_type">
-            <column name="Book_type_Id">2</column>
-            <column name="Name">Paper-Book</column>
-        </table>
-        <!-- Table Faculty -->
-        <table name="Faculty">
-            <column name="User_Id">1</column>
-            <column name="Retired_faculty">1</column>
-        </table>
-        <table name="Faculty">
-            <column name="User_Id">2</column>
-            <column name="Retired_faculty">1</column>
-        </table>
-        <table name="Faculty">
-            <column name="User_Id">3</column>
-            <column name="Retired_faculty">0</column>
-        </table>
-        <table name="Faculty">
-            <column name="User_Id">4</column>
-            <column name="Retired_faculty">0</column>
+        <table name="Game_Gene">
+            <column name="Gene_Id">2</column>
+            <column name="Name">RPG</column>
         </table>
         <!-- Table Item -->
         <table name="Item">
             <column name="Item_Id">1</column>
-            <column name="Author_Id">301</column>
-            <column name="Publisher_Id">Houghton Mifflin</column>
-            <column name="Publication_Date">1999-10-31</column>
-            <column name="Language_Id">201</column>
+            <column name="Developer_Id">301</column>
+            <column name="Publisher_Id">Nintendo</column>
+            <column name="Publication_Date">2017-03-03</column>
+            <column name="Language_Id">202</column>
             <column name="Rack_Id">500</column>
-            <column name="Title">Age of Wonder</column>
-            <column name="Keyword">Science</column>
+            <column name="Title">The Legend of Zelda: Breath of the Wild</column>
+            <column name="Keyword">Zelda</column>
             <column name="Item_type_id">1</column>
         </table>
         <table name="Item">
             <column name="Item_Id">2</column>
-            <column name="Author_Id">302</column>
-            <column name="Publisher_Id">Mallinson Rendel</column>
-            <column name="Publication_Date">2000-01-15</column>
-            <column name="Language_Id">201</column>
+            <column name="Developer_Id">302</column>
+            <column name="Publisher_Id">Valve Corporation</column>
+            <column name="Publication_Date">2004-11-16</column>
+            <column name="Language_Id">202</column>
             <column name="Rack_Id">501</column>
-            <column name="Title">Marine Systems</column>
-            <column name="Keyword">Geology</column>
-            <column name="Item_type_id">2</column>
+            <column name="Title">Half-Life 2</column>
+            <column name="Keyword">Shooter</column>
+            <column name="Item_type_id">1</column>
+        </table>
+        <table name="Item">
+            <column name="Item_Id">3</column>
+            <column name="Developer_Id">303</column>
+            <column name="Publisher_Id">Rockstar Games</column>
+            <column name="Publication_Date">2013-09-17</column>
+            <column name="Language_Id">202</column>
+            <column name="Rack_Id">502</column>
+            <column name="Title">Grand Theft Auto V</column>
+            <column name="Keyword">GTA</column>
+            <column name="Item_type_id">1</column>
         </table>
         <table name="Item">
             <column name="Item_Id">4</column>
-            <column name="Author_Id">304</column>
-            <column name="Publisher_Id">Elsevier Science</column>
-            <column name="Publication_Date">2019-11-20</column>
-            <column name="Language_Id">201</column>
+            <column name="Developer_Id">304</column>
+            <column name="Publisher_Id">Electronic Arts</column>
+            <column name="Publication_Date">2019-11-15</column>
+            <column name="Language_Id">202</column>
             <column name="Rack_Id">503</column>
-            <column name="Title">Game Over</column>
-            <column name="Keyword">Games</column>
-            <column name="Item_type_id">2</column>
+            <column name="Title">Star Wars Jedi: Fallen Order</column>
+            <column name="Keyword">Jedi</column>
+            <column name="Item_type_id">1</column>
+        </table>
+        <table name="Item">
+            <column name="Item_Id">5</column>
+            <column name="Developer_Id">305</column>
+            <column name="Publisher_Id">Activition Blizzard</column>
+            <column name="Publication_Date">2016-05-24</column>
+            <column name="Language_Id">202</column>
+            <column name="Rack_Id">504</column>
+            <column name="Title">Overwatch</column>
+            <column name="Keyword">OW</column>
+            <column name="Item_type_id">1</column>
         </table>
         <table name="Item">
             <column name="Item_Id">6</column>
-            <column name="Author_Id">302</column>
-            <column name="Publisher_Id">Scribner</column>
-            <column name="Publication_Date">2020-04-29</column>
+            <column name="Developer_Id">306</column>
+            <column name="Publisher_Id">Sony Interactive Entertainment</column>
+            <column name="Publication_Date">2015-03-24</column>
             <column name="Language_Id">202</column>
-            <column name="Rack_Id">500</column>
-            <column name="Title">My Book</column>
-            <column name="Keyword">mybook</column>
+            <column name="Rack_Id">505</column>
+            <column name="Title">Bloodborne</column>
+            <column name="Keyword">hard</column>
             <column name="Item_type_id">1</column>
         </table>
         <!-- Table Item_type -->
         <table name="Item_type">
             <column name="Item_type_id">1</column>
-            <column name="Type_name">Book</column>
+            <column name="Type_name">Game</column>
         </table>
         <table name="Item_type">
             <column name="Item_type_id">2</column>
-            <column name="Type_name">Periodical</column>
+            <column name="Type_name">Movie</column>
         </table>
         <!-- Table Language -->
         <table name="Language">
@@ -392,53 +364,87 @@
             <column name="Language_Id">210</column>
             <column name="Language_Name">Spanish</column>
         </table>
-        <!-- Table Library_Staff -->
-        <table name="Library_Staff">
+        <!-- Table Manager -->
+        <table name="Manager">
             <column name="User_Id">1</column>
-            <column name="Retired_Library_Staff">1</column>
+            <column name="Retired_faculty">1</column>
         </table>
-        <table name="Library_Staff">
+        <table name="Manager">
             <column name="User_Id">2</column>
-            <column name="Retired_Library_Staff">0</column>
+            <column name="Retired_faculty">1</column>
         </table>
-        <table name="Library_Staff">
+        <table name="Manager">
             <column name="User_Id">3</column>
-            <column name="Retired_Library_Staff">1</column>
+            <column name="Retired_faculty">0</column>
         </table>
-        <table name="Library_Staff">
+        <table name="Manager">
             <column name="User_Id">4</column>
-            <column name="Retired_Library_Staff">0</column>
+            <column name="Retired_faculty">0</column>
         </table>
-        <!-- Table periodical -->
+        <!-- Table Member -->
+        <table name="Member">
+            <column name="Member_Id">123</column>
+            <column name="User_Id">1</column>
+        </table>
+        <table name="Member">
+            <column name="Member_Id">456</column>
+            <column name="User_Id">2</column>
+        </table>
+        <table name="Member">
+            <column name="Member_Id">789</column>
+            <column name="User_Id">3</column>
+        </table>
+        <table name="Member">
+            <column name="Member_Id">147</column>
+            <column name="User_Id">4</column>
+        </table>
+        <!-- Table movies -->
         <!-- Table post -->
+        <!-- Table Promember -->
+        <table name="Promember">
+            <column name="Memeber_Year">2019-05-15</column>
+            <column name="User_Id">1</column>
+        </table>
+        <table name="Promember">
+            <column name="Memeber_Year">2019-12-15</column>
+            <column name="User_Id">2</column>
+        </table>
+        <table name="Promember">
+            <column name="Memeber_Year">2018-05-15</column>
+            <column name="User_Id">3</column>
+        </table>
+        <table name="Promember">
+            <column name="Memeber_Year">2018-12-15</column>
+            <column name="User_Id">4</column>
+        </table>
         <!-- Table Publisher -->
         <table name="Publisher">
-            <column name="Publisher_Id">Elsevier Science</column>
-            <column name="Address">Detroit</column>
+            <column name="Publisher_Id">Activition Blizzard</column>
+            <column name="Address">Santa Monica</column>
         </table>
         <table name="Publisher">
-            <column name="Publisher_Id">Houghton Mifflin</column>
+            <column name="Publisher_Id">Electronic Arts</column>
+            <column name="Address">Redwood City</column>
+        </table>
+        <table name="Publisher">
+            <column name="Publisher_Id">Nintendo</column>
+            <column name="Address">Kyoto</column>
+        </table>
+        <table name="Publisher">
+            <column name="Publisher_Id">Rockstar Games</column>
             <column name="Address">Newy York</column>
         </table>
         <table name="Publisher">
-            <column name="Publisher_Id">Knopf Doubleday Publishing Group</column>
-            <column name="Address">Newy York</column>
+            <column name="Publisher_Id">Sony Interactive Entertainment</column>
+            <column name="Address">Tokyo</column>
         </table>
         <table name="Publisher">
-            <column name="Publisher_Id">Mallinson Rendel</column>
-            <column name="Address">New Jersey</column>
+            <column name="Publisher_Id">Ubisoft</column>
+            <column name="Address">Montreuil</column>
         </table>
         <table name="Publisher">
-            <column name="Publisher_Id">Penguin Books</column>
-            <column name="Address">London</column>
-        </table>
-        <table name="Publisher">
-            <column name="Publisher_Id">Scribner</column>
-            <column name="Address">New York</column>
-        </table>
-        <table name="Publisher">
-            <column name="Publisher_Id">W.W.Morton</column>
-            <column name="Address">California</column>
+            <column name="Publisher_Id">Valve Corporation</column>
+            <column name="Address">Bellevue</column>
         </table>
         <!-- Table Rack -->
         <table name="Rack">
@@ -463,35 +469,42 @@
         </table>
         <!-- Table Reservation -->
         <table name="Reservation">
-            <column name="Reservation_Id">2</column>
-            <column name="Item_Id">2</column>
-            <column name="Reservation_Date">2020-04-29</column>
-            <column name="Due_Date">2020-04-09</column>
-            <column name="User_ID">5</column>
+            <column name="Reservation_Id">5</column>
+            <column name="Item_Id">1</column>
+            <column name="Reservation_Date">2020-12-03</column>
+            <column name="Due_Date">2020-12-03</column>
+            <column name="User_ID">8</column>
         </table>
         <table name="Reservation">
-            <column name="Reservation_Id">3</column>
-            <column name="Item_Id">4</column>
-            <column name="Reservation_Date">2020-04-29</column>
-            <column name="Due_Date">2020-04-11</column>
-            <column name="User_ID">2</column>
+            <column name="Reservation_Id">6</column>
+            <column name="Item_Id">3</column>
+            <column name="Reservation_Date">2020-12-03</column>
+            <column name="Due_Date">2020-12-30</column>
+            <column name="User_ID">8</column>
         </table>
-        <!-- Table Student -->
-        <table name="Student">
-            <column name="Student_Id">123</column>
+        <table name="Reservation">
+            <column name="Reservation_Id">7</column>
+            <column name="Item_Id">5</column>
+            <column name="Reservation_Date">2020-12-03</column>
+            <column name="Due_Date">2021-01-08</column>
+            <column name="User_ID">8</column>
+        </table>
+        <!-- Table Staff -->
+        <table name="Staff">
             <column name="User_Id">1</column>
+            <column name="Retired_Staff">1</column>
         </table>
-        <table name="Student">
-            <column name="Student_Id">456</column>
+        <table name="Staff">
             <column name="User_Id">2</column>
+            <column name="Retired_Staff">0</column>
         </table>
-        <table name="Student">
-            <column name="Student_Id">789</column>
+        <table name="Staff">
             <column name="User_Id">3</column>
+            <column name="Retired_Staff">1</column>
         </table>
-        <table name="Student">
-            <column name="Student_Id">147</column>
+        <table name="Staff">
             <column name="User_Id">4</column>
+            <column name="Retired_Staff">0</column>
         </table>
         <!-- Table user -->
         <!-- Table User1 -->
@@ -572,26 +585,48 @@
             <column name="Email">123456@111.com</column>
             <column name="User1_type_id">3</column>
         </table>
+        <table name="User1">
+            <column name="User_Id">9</column>
+            <column name="FName">Ted</column>
+            <column name="LName">Fu</column>
+            <column name="UName">tedfu</column>
+            <column name="Password">$2b$12$F1VI163DzZZ5Wre2FfwQx.O9mzhufnyjEt.SWjcaE6KU6qmiJHXrW</column>
+            <column name="DOB">1991-05-08</column>
+            <column name="Address">Chicago</column>
+            <column name="Email">tedfu@123.com</column>
+            <column name="User1_type_id">2</column>
+        </table>
+        <table name="User1">
+            <column name="User_Id">10</column>
+            <column name="FName">Ted</column>
+            <column name="LName">F</column>
+            <column name="UName">Ted-Staff</column>
+            <column name="Password">$2b$12$ph1gzP67PJYJ3kGeJAmwweUzYaNZ89HFJAXt9hDjTGuofZ18tMlAm</column>
+            <column name="DOB">1991-05-08</column>
+            <column name="Address">Chicago</column>
+            <column name="Email">ted@123.com</column>
+            <column name="User1_type_id">3</column>
+        </table>
         <!-- Table User1_type -->
         <table name="User1_type">
-            <column name="User1_type_id">5</column>
-            <column name="Name">alumni</column>
-        </table>
-        <table name="User1_type">
             <column name="User1_type_id">2</column>
-            <column name="Name">faculty</column>
+            <column name="Name">manager</column>
         </table>
         <table name="User1_type">
-            <column name="User1_type_id">3</column>
-            <column name="Name">library_staff</column>
+            <column name="User1_type_id">4</column>
+            <column name="Name">member</column>
+        </table>
+        <table name="User1_type">
+            <column name="User1_type_id">5</column>
+            <column name="Name">promember</column>
         </table>
         <table name="User1_type">
             <column name="User1_type_id">1</column>
             <column name="Name">public_user</column>
         </table>
         <table name="User1_type">
-            <column name="User1_type_id">4</column>
-            <column name="Name">student</column>
+            <column name="User1_type_id">3</column>
+            <column name="Name">staff</column>
         </table>
     </database>
 </pma_xml_export>
